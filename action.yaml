@@ -1,0 +1,24 @@
+name: Maven version
+author: Petr Portov
+description: Resolves Maven project version
+branding:
+  icon: search
+  color: orange
+
+inputs:
+  pom:
+    description: Path to Maven's pom.xml file
+    required: true
+    default: ./pom.xml
+outputs:
+  version:
+    description: Resolved Maven version
+    value: ${{ steps.resolve-version.outputs.resolved-version }}
+
+runs:
+  using: composite
+  steps:
+    - id: resolve-version
+      shell: bash
+      run: "echo \"::set-output name=resolved-version::\
+        $(mvn -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec --quiet)\""
