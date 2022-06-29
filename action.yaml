@@ -21,4 +21,9 @@ runs:
     - id: resolve-version
       shell: bash
       run: "echo \"::set-output name=resolved-version::\
-        $(mvn -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec --quiet)\""
+        $(mvn
+          --file ${{ inputs.pom }}
+          -Dexec.executable=echo
+          -Dexec.args='${project.version}'
+          --non-recursive exec:exec --quiet
+        )\""
