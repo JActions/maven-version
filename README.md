@@ -18,9 +18,13 @@ steps:
 
 This will output version string accessible via `${{ steps.get-version.outputs.version }}`.
 
-### Customizing Maven path
+You can use any valid identifier instead of `get-version`.
 
-By default, the action uses `./pom.xml` as path to your Maven configuration (`-f` flag of Maven). This can be overridden via `pom` input:
+### Customizing Maven POM path
+
+By default, the action uses Maven's default POM file location.
+This can be overridden via `pom` input
+which is equivalent to providing `--file` parameter to Maven executable:
 
 ```yaml
 steps:
@@ -28,6 +32,20 @@ steps:
   uses: jactions/maven-version@v1
   with:
     pom: ./custom/path/to/pom.xml
+```
+
+### Customizing Maven Settings path
+
+By default, the action used Maven's defaults for its settings file.
+This can be overridden via `settings` input
+which is equivalent to providing `--settings` parameter to Maven executable:
+
+```yaml
+steps:
+- id: get-version
+  uses: jactions/maven-version@v1
+  with:
+    settings: ./custom/path/to/settings.xml
 ```
 
 ## License
