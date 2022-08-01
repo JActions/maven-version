@@ -1,5 +1,5 @@
 name: Maven version
-author: Petr Portov
+author: Petr Portnov
 description: Resolves Maven project version
 branding:
   icon: search
@@ -8,8 +8,7 @@ branding:
 inputs:
   pom:
     description: Path to Maven's pom.xml file
-    required: true
-    default: ./pom.xml
+    required: false
   settings:
     description: Path to Maven's settings.xml file
     required: false
@@ -25,9 +24,8 @@ runs:
       shell: bash
       run: "echo \"::set-output name=resolved-version::\
         $(mvn
-          --file ${{ inputs.pom }}
+          ${{ inputs.pom != '' && format('--file={0}', inputs.pom) || '' }}
           ${{ inputs.settings != '' && format('--settings={0}', inputs.settings) || '' }}
-          -Dexec.executable=echo
-          -Dexec.args='${project.version}'
-          --non-recursive exec:exec --quiet
+          --quiet --non-recursive
+          exec:exec -Dexec.executable=echo -Dexec.args='${project.version}'
         )\""
