@@ -21,16 +21,12 @@ outputs:
 runs:
   using: composite
   steps:
-    - id: prepare-settings
-      shell: bash
-      if: ${{ inputs.settings != '' }}
-      run: echo "SETTINGS=--settings ${{inputs.settings}}" >> $GITHUB_ENV
     - id: resolve-version
       shell: bash
       run: "echo \"::set-output name=resolved-version::\
         $(mvn
           --file ${{ inputs.pom }}
-          $SETTINGS
+          ${{ inputs.settings != '' && format('--settings={0}', inputs.settings) || '' }}
           -Dexec.executable=echo
           -Dexec.args='${project.version}'
           --non-recursive exec:exec --quiet
