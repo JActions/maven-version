@@ -10,6 +10,9 @@ inputs:
     description: Path to Maven's pom.xml file
     required: true
     default: ./pom.xml
+  settings:
+    description: Path to Maven's settings.xml file
+    required: false
 outputs:
   version:
     description: Resolved Maven version
@@ -23,6 +26,7 @@ runs:
       run: "echo \"::set-output name=resolved-version::\
         $(mvn
           --file ${{ inputs.pom }}
+          ${{ inputs.settings != '' && format('--settings={0}', inputs.settings) || '' }}
           -Dexec.executable=echo
           -Dexec.args='${project.version}'
           --non-recursive exec:exec --quiet
