@@ -22,7 +22,7 @@ runs:
   steps:
     - id: resolve-version
       shell: bash
-      run: "echo \"name=resolved-version::\
+      run: "echo \"resolved-version=\
         $(mvn
           ${{ inputs.pom != '' && format('--file={0}', inputs.pom) || '' }}
           ${{ inputs.settings != '' && format('--settings={0}', inputs.settings) || '' }}
