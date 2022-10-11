@@ -22,10 +22,10 @@ runs:
   steps:
     - id: resolve-version
       shell: bash
-      run: "echo \"::set-output name=resolved-version::\
+      run: "echo \"name=resolved-version::\
         $(mvn
           ${{ inputs.pom != '' && format('--file={0}', inputs.pom) || '' }}
           ${{ inputs.settings != '' && format('--settings={0}', inputs.settings) || '' }}
           --quiet --non-recursive
           exec:exec -Dexec.executable=echo -Dexec.args='${project.version}'
-        )\""
+        )\" >> \"${GITHUB_OUTPUT}\""
